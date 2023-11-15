@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "DatabaseName": {
+            "type": "string",
+            "defaultvalue": "Promodb",
+            "metadata": {
+                "description": "description"
+            }
+        },
+    "Servername": {
+        "type": "string",
+        "defaultvalue": "Trudev02",
+        "metadata": {
+            "description": "Server name"
+        }
+    }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[format('{0}/{1}',parameters('Servername'),parameters('DatabaseName'))]",
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2021-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "[parameters('DatabaseName')]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('Servername'))]"
+            ],
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "edition": "Basic",
+                "maxSizeBytes": 1073741824,
+                "requestedServiceObjectiveName": "Basic"
+            }
+        },
+    {
+        "name": "[parameters('Servername')]",
+        "type": "Microsoft.Sql/servers",
+        "apiVersion": "2021-11-01",
+        "location": "[resourceGroup().location]",
+        "tags": {
+            "displayName": "[parameters('Servername')]"
+        },
+        "properties": {
+            "administratorLogin": "john.azeh",
+            "administratorLoginPassword": "Password010101"
+        },
+        "resources": [
+            {
+                "type": "firewallRules",
+                "apiVersion": "2014-04-01",
+                "dependsOn": [
+                    "[resourceId('Microsoft.Sql/servers', parameters('Servername'))]"
+                ],
+                "location": "[resourceGroup().location]",
+                "name": "AllowAllWindowsAzureIps",
+                "properties": {
+                    "startIpAddress": "108.173.224.177",
+                    "endIpAddress": "108.173.224.177"
+                }
+            }
+        ]
+    }
+    ],
+    "outputs": {}
+}
