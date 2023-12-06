@@ -4,14 +4,14 @@
     "parameters": {
         "DatabaseName": {
             "type": "string",
-            "defaultvalue": "Promodb",
+            "defaultValue": "Promodb",
             "metadata": {
                 "description": "description"
             }
         },
     "Servername": {
         "type": "string",
-        "defaultvalue": "Trudev02",
+        "defaultValue": "trudev02",
         "metadata": {
             "description": "Server name"
         }
